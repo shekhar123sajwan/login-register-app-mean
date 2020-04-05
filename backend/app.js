@@ -19,7 +19,7 @@ app.use('/user', users);
 
 app.get('/', (req, res) => {
    res.status(404);
-   res.send('Invalid');
+   res.send('Invalid ok');
 });
 
 DB.on('connected', function() {
