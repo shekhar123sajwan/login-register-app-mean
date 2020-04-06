@@ -17,9 +17,14 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/user', users); 
 
-app.get('/', (req, res) => {
-   res.status(404);
-   res.send('Invalid ok');
+app.use((req, res, next) => {
+  const err = new Error('Url not Found');
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.json({ error: { message: err.message } })
 });
 
 DB.on('connected', function() {
