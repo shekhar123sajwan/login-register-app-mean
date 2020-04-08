@@ -7,11 +7,11 @@ const routes: Routes = [{
 	path: '',
 	component: AppComponent
 },{
-	path : 'invoice-builder',
-	loadChildren: () => import('./invoice-builder/invoice-builder.module').then(mod => mod.InvoiceBuilderModule)
+	path : 'dashboard',
+	loadChildren: () => import('./dashboard/dashboard.module').then(mod => mod.DashboardModule)
 }, {
 	path : '**',
-	redirectTo: 'invoice-builder'
+	redirectTo: 'dashboard'
 }];
 
 @NgModule({
