@@ -6,7 +6,7 @@ import { DashboardComponent } from './dashboard.component';
 import { MainContentComponent } from './components/main-content/main-content.component';
 import { MaterialModule } from './../shared/material.module';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
-import { ToolbarComponent } from './components/toolbar/toolbar.component'; 
+import { ToolbarComponent } from './components/toolbar/toolbar.component';  
 
 
 @NgModule({
@@ -14,7 +14,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    MaterialModule
+    MaterialModule 
   ]
 })
 export class DashboardModule { }
