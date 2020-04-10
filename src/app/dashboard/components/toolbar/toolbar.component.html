@@ -1,3 +1,8 @@
 <mat-toolbar color="warn">
+  <button mat-button (click) = "toggleSideNav.emit()" *ngIf="isSmallScreen"> 
+    <span class="material-icons">
+      menu
+    </span>
+  </button>
   <span>Invoice Builder</span>
 </mat-toolbar>

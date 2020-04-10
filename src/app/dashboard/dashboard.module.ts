@@ -1,3 +1,5 @@
+import { ClientsModule } from './../clients/clients.module';
+import { InvoicesModule } from './../invoices/invoices.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -14,7 +16,9 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    MaterialModule 
+    MaterialModule,
+    InvoicesModule,
+    ClientsModule
   ]
 })
 export class DashboardModule { }
