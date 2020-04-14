@@ -5,5 +5,6 @@ const forms = multer();
 const InvoiceController = require('../controllers/invoice');
 
 router.get('/', InvoiceController.findAll);
+router.post('/', InvoiceController.create);
 
 module.exports = router;

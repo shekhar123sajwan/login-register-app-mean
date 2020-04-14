@@ -25,7 +25,12 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
     res.status(err.status || 500);
-    res.json({ error: { message: err.message } });
+    res.json({
+        status: err.status || 500,
+        error: true,
+        message: err.message,
+        data: [],
+    });
 });
 
 DB.on('connected', function () {
