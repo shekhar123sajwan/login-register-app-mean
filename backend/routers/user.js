@@ -9,24 +9,20 @@ const forms = multer();
 // });
 
 router.get('/', (req, res) => {
-	res.status(200);
-	res.json({'message': 'ok'})
+  res.status(200);
+  res.json({ message: 'ok' });
 });
 
 router.post('/register', forms.array('image'), (req, res) => {
-  
-  res.json(req.files)
-  
+  res.json(req.files);
 });
 
-router.post('/login', (req, res) => { 
-
-  
+router.post('/login', (req, res) => {
+  res.json('sf');
 });
 
 router.get('/:id', (req, res) => {
-
-  res.json('hi')
+  res.json('hi');
 });
- 
+
 module.exports = router;
