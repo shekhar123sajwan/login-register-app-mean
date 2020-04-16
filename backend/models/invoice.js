@@ -27,7 +27,7 @@ const InvoiceSchema = new Schema(
         },
     },
     {
-        toObject: { versionKey: false },
+        versionKey: false,
     }
 );
 
