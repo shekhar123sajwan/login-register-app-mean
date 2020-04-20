@@ -105,6 +105,7 @@ module.exports.create = async (req, res, next) => {
     invoiceModel
         .create(values)
         .then((invoice) => {
+            res.status(201);
             return res.json({
                 status: 201,
                 error: false,
@@ -196,7 +197,7 @@ module.exports.update = async (req, res, next) => {
             return res.json({
                 status: 201,
                 error: false,
-                message: 'Invoice Updated',
+                message: 'Invoice Updated.',
                 data: invoice,
             });
         })
