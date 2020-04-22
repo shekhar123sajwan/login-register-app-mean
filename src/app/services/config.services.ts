@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter, Output } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,8 @@ export class ConfigService {
       'Content-Type': 'application/json',
     }),
   };
-
+  loading: boolean = false;
+  @Output() load: EventEmitter<boolean> = new EventEmitter<boolean>();
   constructor() {}
 
   cleanUrl(url: string) {
@@ -20,5 +21,10 @@ export class ConfigService {
       .toLowerCase()
       .replace(/[^a-zA-Z\d\s]/, '')
       .replace(' ', '-');
+  }
+
+  toggleLoading(key: boolean) {
+    this.loading = key;
+    this.load.emit(this.loading);
   }
 }

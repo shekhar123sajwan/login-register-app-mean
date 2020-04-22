@@ -58,6 +58,16 @@ export class HttpService {
       .pipe(catchError(this.handleError));
   }
 
+  putRequest(url: string, getParams: Object, postParams: any): Observable<any> {
+    return this.http
+      .put<any>(
+        ConfigService.API_URL + this.serialize(url, getParams),
+        postParams,
+        ConfigService.HTTP_OPTIONS
+      )
+      .pipe(catchError(this.handleError));
+  }
+
   deleteRequest(url: string, getParams: Object): Observable<any> {
     return this.http
       .delete<any>(
@@ -78,13 +88,13 @@ export class HttpService {
   }
 
   handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Unknown error!';
+    let errorMessage = 'Server error!';
     if (error.error instanceof ErrorEvent) {
       // Client-side errors
-      errorMessage = `Error: ${error.error.message}`;
+      errorMessage = `Error Message: ${error.error.message}`;
     } else {
       // Server-side errors
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      errorMessage = `Error Message: ${error.message}`;
     }
     return throwError(errorMessage);
   }
