@@ -205,3 +205,18 @@ module.exports.update = async (req, res, next) => {
             return next(err);
         });
 };
+
+module.exports.search = async (req, res, next) => {
+    const { sort, order, limit, filter, pages } = req.query;
+    try {
+        // await invoiceModel.find().
+        // where('name.last').equals('Ghost').
+        // where('age').gt(17).lt(66).
+        // where('likes').in(['vaporizing', 'talking']).
+        // limit(10).
+        //     sort('-occupation')
+        //     ;
+    } catch (error) {
+        return next(error);
+    }
+};

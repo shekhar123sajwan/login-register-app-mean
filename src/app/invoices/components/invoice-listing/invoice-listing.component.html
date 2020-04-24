@@ -44,7 +44,13 @@
 
       <ng-container matColumnDef="disclaimer">
         <td mat-footer-cell *matFooterCellDef colspan="6" align="center">
-          <mat-error class="warm">{{ err }} </mat-error>
+          <p>{{ err }}</p>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="loading">
+        <td mat-footer-cell *matFooterCellDef colspan="6" align="center">
+          <p>loading...</p>
         </td>
       </ng-container>
 
@@ -53,15 +59,19 @@
       <tr
         mat-footer-row
         *matFooterRowDef="['disclaimer']"
-        [style.display]="
-          !dataSource.data || !dataSource.data.length ? '' : 'none'
-        "
+        [style.display]="err ? '' : 'none'"
+      ></tr>
+      <tr
+        mat-footer-row
+        *matFooterRowDef="['loading']"
+        [style.display]="!dataSource.data && !err ? '' : 'none'"
       ></tr>
     </table>
   </div>
 
   <mat-paginator
-    [pageSizeOptions]="[5, 10, 20]"
+    [pageSize]="itemPerPage"
     showFirstLastButtons
+    [length]="resultsLength"
   ></mat-paginator>
 </div>

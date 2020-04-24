@@ -1,21 +1,24 @@
 import { ConfigService } from './../../../services/config.services';
 import { Invoice } from './../../../models/invoice';
 import { HttpService } from './../../../services/http.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { merge, Observable, of as observableOf } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-invoice-listing',
   templateUrl: './invoice-listing.component.html',
   styleUrls: ['./invoice-listing.component.css'],
 })
-export class InvoiceListingComponent implements OnInit {
+export class InvoiceListingComponent implements OnInit, AfterViewInit {
   constructor(
     private httpService: HttpService,
     private configService: ConfigService
   ) {}
+
   displayedColumns: string[] = [
     'item',
     'quantity',
@@ -24,16 +27,52 @@ export class InvoiceListingComponent implements OnInit {
     'rate',
     'tax',
   ];
+  resultsLength: number = 11;
+  itemPerPage: number = 2;
   dataSource: any = [];
   err: string = '';
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   ngOnInit(): void {
-    this.getInvoices();
+    //this.getInvoices();
     // this.addInvoices();
     // this.deleteInvoices();
     // this.updateInvoices();
+  }
+
+  ngAfterViewInit(): void {
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          const params = {
+            sort: this.sort.active,
+            order: this.sort.direction,
+            limit: this.itemPerPage,
+            filter:
+              typeof this.dataSource.filter == 'function'
+                ? 'undefined'
+                : this.dataSource.filter,
+            pages: this.paginator.pageIndex,
+          };
+          console.log(this.dataSource.filter ? 'd' : 's');
+          return this.httpService.getRequest('invoices', params);
+        }),
+        map((response) => {
+          return response.body.data;
+        }),
+        catchError(() => {
+          return observableOf([]);
+        })
+      )
+      .subscribe((response) => {
+        this.dataSource = new MatTableDataSource(response);
+        //console.log(this.dataSource);
+        return this.dataSource.data;
+      });
   }
 
   getInvoices() {
@@ -54,6 +93,8 @@ export class InvoiceListingComponent implements OnInit {
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
 
+          console.log(this.dataSource);
+
           if (this.dataSource.data.length <= 0) {
             this.err = 'No found any record';
           }
@@ -64,7 +105,7 @@ export class InvoiceListingComponent implements OnInit {
         }
       );
     } catch (err) {
-      console.log('ss' + err);
+      console.log('err' + err);
     }
   }
 
