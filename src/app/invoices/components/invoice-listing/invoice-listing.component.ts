@@ -5,8 +5,17 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { merge, Observable, of as observableOf } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { merge, Observable, of as observableOf, Subject } from 'rxjs';
+import { debounce } from 'lodash';
+
+import {
+  catchError,
+  map,
+  startWith,
+  switchMap,
+  debounceTime,
+  first,
+} from 'rxjs/operators';
 
 @Component({
   selector: 'app-invoice-listing',
@@ -14,11 +23,6 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
   styleUrls: ['./invoice-listing.component.css'],
 })
 export class InvoiceListingComponent implements OnInit, AfterViewInit {
-  constructor(
-    private httpService: HttpService,
-    private configService: ConfigService
-  ) {}
-
   displayedColumns: string[] = [
     'item',
     'quantity',
@@ -27,12 +31,23 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
     'rate',
     'tax',
   ];
-  resultsLength: number = 11;
-  itemPerPage: number = 2;
+  resultsLength: number;
+  itemPerPage: Number = 2;
   dataSource: any = [];
   err: string = '';
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
+
+  searchText: string = '';
+  tableData: Observable<Invoice[]>;
+
+  constructor(
+    private httpService: HttpService,
+    private configService: ConfigService
+  ) {
+    //delay applyFilter method
+    this.applyFilter = debounce(this.applyFilter, 500);
+  }
 
   ngOnInit(): void {
     //this.getInvoices();
@@ -42,44 +57,41 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+    this.renderTableData();
+    this.tableData.subscribe((invoices) => {
+      this.dataSource = new MatTableDataSource(invoices);
+    });
+  }
 
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          const params = {
-            sort: this.sort.active,
-            order: this.sort.direction,
-            limit: this.itemPerPage,
-            filter:
-              typeof this.dataSource.filter == 'function'
-                ? 'undefined'
-                : this.dataSource.filter,
-            pages: this.paginator.pageIndex,
-          };
-          console.log(this.dataSource.filter ? 'd' : 's');
-          return this.httpService.getRequest('invoices', params);
-        }),
-        map((response) => {
-          return response.body.data;
-        }),
-        catchError(() => {
-          return observableOf([]);
-        })
-      )
-      .subscribe((response) => {
-        this.dataSource = new MatTableDataSource(response);
-        //console.log(this.dataSource);
-        return this.dataSource.data;
-      });
+  renderTableData(): void {
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+    this.tableData = merge(this.sort.sortChange, this.paginator.page).pipe(
+      startWith({}),
+      switchMap(() => {
+        const params = {
+          sort: this.sort.active,
+          order: this.sort.direction,
+          limit: this.itemPerPage,
+          filter: this.searchText,
+          pages: this.paginator.pageIndex + 1,
+        };
+        return this.httpService.getRequest('invoices/search', params);
+      }),
+      map((response) => {
+        this.resultsLength = response.body.data.total;
+        return response.body.data.invoices;
+      }),
+      catchError(() => {
+        return observableOf([]);
+      })
+    );
   }
 
   getInvoices() {
     // return new Promise((resolv))
     let params = {
       id: 1,
-      name: 'Invoid',
+      name: 'Invoices',
     };
 
     this.configService.toggleLoading(true);
@@ -122,7 +134,6 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
       };
       this.httpService.postRequest('invoices', getParams, postParams).subscribe(
         (response) => {
-          console.log(response);
           return response;
         },
         (err) => console.log(err)
@@ -155,7 +166,11 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.searchText = (event.target as HTMLInputElement).value
+      .trim()
+      .toLowerCase();
+    this.tableData.pipe(first()).subscribe((invoices) => {
+      this.dataSource = new MatTableDataSource(invoices);
+    });
   }
 }

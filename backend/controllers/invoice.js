@@ -206,16 +206,47 @@ module.exports.update = async (req, res, next) => {
         });
 };
 
+//localhost:3000/api/invoices?sort=undefined&order=&limit=2&filter=&pages=0
+
 module.exports.search = async (req, res, next) => {
     const { sort, order, limit, filter, pages } = req.query;
+    const offset = Math.abs((pages - 1) * limit);
+    const sortOrder = sort != 'undefined' ? `${order == 'desc' ? '-' : ''}${sort}` : {};
     try {
-        // await invoiceModel.find().
-        // where('name.last').equals('Ghost').
-        // where('age').gt(17).lt(66).
-        // where('likes').in(['vaporizing', 'talking']).
-        // limit(10).
-        //     sort('-occupation')
-        //     ;
+        const totalInvoices = invoiceModel.countDocuments().exec();
+        const searchInvoicesData = invoiceModel
+            .find()
+            .sort(sortOrder)
+            .skip(parseInt(offset))
+            .limit(parseInt(limit))
+            .exec();
+
+        const result = Promise.all([totalInvoices, searchInvoicesData]);
+
+        result.then(([total, invoices]) => {
+            return res.json({
+                status: 200,
+                error: false,
+                message: 'Invoice.',
+                data: { total: total, invoices: invoices },
+            });
+        });
+        // await invoiceModel
+        //     .find()
+        //     // .where(['item', 'quantity', 'date', 'due', 'rate'])
+        //     // .in(typeof filter != 'undefined' ? filter : '')
+        //     .sort(sortOrder)
+        //     .skip(parseInt(offset))
+        //     .limit(parseInt(limit))
+        //     .then((invoice) => {
+        //         invoiceModel.countDocuments();
+        //         return res.json({
+        //             status: 200,
+        //             error: false,
+        //             message: 'Invoice.',
+        //             data: invoice,
+        //         });
+        //     });
     } catch (error) {
         return next(error);
     }
