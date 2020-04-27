@@ -224,19 +224,22 @@ module.exports.search = async (req, res, next) => {
         if (filter.match(datePat)) {
             extactedDate = filter.split('/');
             dateObj = new Date(`${extactedDate[2]}-${extactedDate[1]}-${extactedDate[0]}`);
-            isoDate = moment(dateObj).format('YYYY-MM-DDT00:00:00.000') + 'Z';
-            // isoDate = moment(dateObj, 'DD/MM/YYYY')
-            //     .utcOffset(0)
-            //     .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-            //     .toISOString();
 
-            // isoDate = new Date(
-            //     dateObj.getTime() - dateObj.getTimezoneOffset() * 60000
-            // ).toISOString();
+            if (moment(dateObj).isValid()) {
+                isoDate = moment(dateObj).format('YYYY-MM-DDT00:00:00.000') + 'Z';
+                // isoDate = moment(dateObj, 'DD/MM/YYYY')
+                //     .utcOffset(0)
+                //     .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+                //     .toISOString();
 
-            filterParams.$or.push({
-                date: isoDate,
-            });
+                // isoDate = new Date(
+                //     dateObj.getTime() - dateObj.getTimezoneOffset() * 60000
+                // ).toISOString();
+
+                filterParams.$or.push({
+                    date: isoDate,
+                });
+            }
         }
     }
 
@@ -249,7 +252,7 @@ module.exports.search = async (req, res, next) => {
     // v = moment.toArray([2010, 1, 14, 15, 25, 50, 125]);
 
     // console.log(isoDate);
-    // console.log(filterParams);
+    console.log(filterParams);
 
     try {
         const totalInvoices = invoiceModel.countDocuments(filterParams).exec();

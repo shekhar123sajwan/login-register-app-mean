@@ -172,6 +172,7 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
     this.searchText = (event.target as HTMLInputElement).value
       .trim()
       .toLowerCase();
+    this.paginator.pageIndex = 0;
     this.tableData.pipe(first()).subscribe((invoices) => {
       this.configService.toggleLoading(false);
       this.dataSource = new MatTableDataSource(invoices);
