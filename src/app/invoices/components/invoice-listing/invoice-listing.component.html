@@ -2,7 +2,11 @@
   <div class="filter-input-box">
     <mat-form-field>
       <mat-label>Filter</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" />
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Ex. Invoices, DD/MM/YYY"
+      />
     </mat-form-field>
   </div>
 

@@ -1,5 +1,7 @@
 const invoiceModel = require('../models/invoice');
-const Joi = require('@hapi/joi');
+const Joi = require('@hapi/joi').extend(require('@hapi/joi-date'));
+
+var moment = require('moment');
 
 module.exports.findAll = async (req, res, next) => {
     try {
@@ -87,9 +89,9 @@ module.exports.create = async (req, res, next) => {
 
         quantity: Joi.number().required(),
 
-        date: Joi.date().required(),
+        date: Joi.date().format('YYYY-MM-DD').utc().required(),
 
-        due: Joi.date().required(),
+        due: Joi.date().format('YYYY-MM-DD').utc().required(),
 
         rate: Joi.number(),
 
@@ -175,9 +177,9 @@ module.exports.update = async (req, res, next) => {
 
         quantity: Joi.number(),
 
-        date: Joi.date(),
+        date: Joi.date().format('YYYY-MM-DD').utc(),
 
-        due: Joi.date(),
+        due: Joi.date().format('YYYY-MM-DD').utc(),
 
         rate: Joi.number(),
 
@@ -212,10 +214,39 @@ module.exports.search = async (req, res, next) => {
     const { sort, order, limit, filter, pages } = req.query;
     const offset = Math.abs((pages - 1) * limit);
     const sortOrder = sort != 'undefined' ? `${order == 'desc' ? '-' : ''}${sort}` : {};
+    const filterParams = {};
+
+    if (filter) {
+        Object.assign(filterParams, { $or: [] });
+        filterParams.$or.push({ item: { $regex: filter, $options: 'i' } });
+        console.log(filter);
+        datePat = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+        if (filter.match(datePat)) {
+            extactedDate = filter.split('/');
+            date = new Date(`${extactedDate[2]}-${extactedDate[1]}-${extactedDate[0]}`); // Fri Feb 20 2015 19:29:31 GMT+0530 (India Standard Time)
+            isoDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString();
+            filterParams.$or.push({
+                date: new Date(isoDate),
+            });
+        }
+    }
+
+    // var s = moment(filter, 'DD/MM/YYYY')
+    //     .utc()
+    //     .utcOffset(0)
+    //     .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+    //     .toDate();
+    // d = filter.split('/');
+    // // var s = moment.utc([2010, 1 - 1, 14, 15, 25, 50, 125]);
+    // v = moment.toArray([2010, 1, 14, 15, 25, 50, 125]);
+
+    // console.log(v);
+    //console.log(filterParams);
+
     try {
-        const totalInvoices = invoiceModel.countDocuments().exec();
+        const totalInvoices = invoiceModel.countDocuments(filterParams).exec();
         const searchInvoicesData = invoiceModel
-            .find()
+            .find(filterParams)
             .sort(sortOrder)
             .skip(parseInt(offset))
             .limit(parseInt(limit))

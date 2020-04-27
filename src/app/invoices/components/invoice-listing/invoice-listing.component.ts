@@ -32,7 +32,7 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
     'tax',
   ];
   resultsLength: number;
-  itemPerPage: Number = 2;
+  itemPerPage: Number = 12;
   dataSource: any = [];
   err: string = '';
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
