@@ -58,6 +58,12 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="notfound">
+        <td mat-footer-cell *matFooterCellDef colspan="6" align="center">
+          <p>Not found any Invoices</p>
+        </td>
+      </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       <tr
@@ -69,6 +75,12 @@
         mat-footer-row
         *matFooterRowDef="['loading']"
         [style.display]="!dataSource.data && !err ? '' : 'none'"
+      ></tr>
+
+      <tr
+        mat-footer-row
+        *matFooterRowDef="['notfound']"
+        [style.display]="!resultsLength && dataSource.data ? '' : 'none'"
       ></tr>
     </table>
   </div>

@@ -32,7 +32,7 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
     'tax',
   ];
   resultsLength: number;
-  itemPerPage: Number = 12;
+  itemPerPage: Number = 5;
   dataSource: any = [];
   err: string = '';
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
@@ -59,6 +59,7 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.renderTableData();
     this.tableData.subscribe((invoices) => {
+      this.configService.toggleLoading(false);
       this.dataSource = new MatTableDataSource(invoices);
     });
   }
@@ -68,6 +69,7 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
     this.tableData = merge(this.sort.sortChange, this.paginator.page).pipe(
       startWith({}),
       switchMap(() => {
+        this.configService.toggleLoading(true);
         const params = {
           sort: this.sort.active,
           order: this.sort.direction,
@@ -82,6 +84,7 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
         return response.body.data.invoices;
       }),
       catchError(() => {
+        this.configService.toggleLoading(false);
         return observableOf([]);
       })
     );
@@ -170,6 +173,7 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
       .trim()
       .toLowerCase();
     this.tableData.pipe(first()).subscribe((invoices) => {
+      this.configService.toggleLoading(false);
       this.dataSource = new MatTableDataSource(invoices);
     });
   }

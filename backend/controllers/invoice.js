@@ -223,25 +223,33 @@ module.exports.search = async (req, res, next) => {
         datePat = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
         if (filter.match(datePat)) {
             extactedDate = filter.split('/');
-            date = new Date(`${extactedDate[2]}-${extactedDate[1]}-${extactedDate[0]}`); // Fri Feb 20 2015 19:29:31 GMT+0530 (India Standard Time)
-            isoDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString();
+            dateObj = new Date(`${extactedDate[2]}-${extactedDate[1]}-${extactedDate[0]}`);
+            isoDate = moment(dateObj).format('YYYY-MM-DDT00:00:00.000') + 'Z';
+            // isoDate = moment(dateObj, 'DD/MM/YYYY')
+            //     .utcOffset(0)
+            //     .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+            //     .toISOString();
+
+            // isoDate = new Date(
+            //     dateObj.getTime() - dateObj.getTimezoneOffset() * 60000
+            // ).toISOString();
+
             filterParams.$or.push({
-                date: new Date(isoDate),
+                date: isoDate,
             });
         }
     }
 
     // var s = moment(filter, 'DD/MM/YYYY')
-    //     .utc()
     //     .utcOffset(0)
     //     .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-    //     .toDate();
+    //     .toISOString();
     // d = filter.split('/');
     // // var s = moment.utc([2010, 1 - 1, 14, 15, 25, 50, 125]);
     // v = moment.toArray([2010, 1, 14, 15, 25, 50, 125]);
 
-    // console.log(v);
-    //console.log(filterParams);
+    // console.log(isoDate);
+    // console.log(filterParams);
 
     try {
         const totalInvoices = invoiceModel.countDocuments(filterParams).exec();
