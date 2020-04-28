@@ -1,5 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +12,10 @@ export class ConfigService {
       'Content-Type': 'application/json',
     }),
   };
+
   loading: boolean = false;
   @Output() load: EventEmitter<boolean> = new EventEmitter<boolean>();
-  constructor() {}
+  constructor(private router: Router) {}
 
   cleanUrl(url: string) {
     return url
@@ -26,5 +28,9 @@ export class ConfigService {
   toggleLoading(key: boolean) {
     this.loading = key;
     this.load.emit(this.loading);
+  }
+
+  redirect(path: string) {
+    return this.router.navigate([path]);
   }
 }

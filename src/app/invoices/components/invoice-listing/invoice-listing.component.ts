@@ -30,6 +30,7 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
     'due',
     'rate',
     'tax',
+    'action',
   ];
   resultsLength: number;
   itemPerPage: Number = 5;
@@ -177,5 +178,9 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
       this.configService.toggleLoading(false);
       this.dataSource = new MatTableDataSource(invoices);
     });
+  }
+
+  addInvoice() {
+    return this.configService.redirect('dashboard/invoices/new');
   }
 }
