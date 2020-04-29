@@ -89,9 +89,9 @@ module.exports.create = async (req, res, next) => {
 
         quantity: Joi.number().required(),
 
-        date: Joi.date().format('YYYY-MM-DD').utc().required(),
+        date: Joi.date().required(),
 
-        due: Joi.date().format('YYYY-MM-DD').utc().required(),
+        due: Joi.date().required(),
 
         rate: Joi.number(),
 
@@ -177,9 +177,9 @@ module.exports.update = async (req, res, next) => {
 
         quantity: Joi.number(),
 
-        date: Joi.date().format('YYYY-MM-DD').utc(),
+        date: Joi.date(),
 
-        due: Joi.date().format('YYYY-MM-DD').utc(),
+        due: Joi.date(),
 
         rate: Joi.number(),
 
@@ -213,7 +213,8 @@ module.exports.update = async (req, res, next) => {
 module.exports.search = async (req, res, next) => {
     const { sort, order, limit, filter, pages } = req.query;
     const offset = Math.abs((pages - 1) * limit);
-    const sortOrder = sort != 'undefined' ? `${order == 'desc' ? '-' : ''}${sort}` : {};
+    const sortOrder =
+        sort != 'undefined' && order != '' ? `${order == 'desc' ? '-' : ''}${sort}` : {};
     const filterParams = {};
 
     if (filter) {
@@ -223,21 +224,34 @@ module.exports.search = async (req, res, next) => {
         datePat = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
         if (filter.match(datePat)) {
             extactedDate = filter.split('/');
-            dateObj = new Date(`${extactedDate[2]}-${extactedDate[1]}-${extactedDate[0]}`);
+            // dateObj = new Date(`${extactedDate[2]}-${extactedDate[1]}-${extactedDate[0]}`);
+            ymdFormatedDate = `${extactedDate[2]}-${extactedDate[1]}-${extactedDate[0]}`;
 
-            if (moment(dateObj).isValid()) {
-                isoDate = moment(dateObj).format('YYYY-MM-DDT00:00:00.000') + 'Z';
-                // isoDate = moment(dateObj, 'DD/MM/YYYY')
+            if (moment(ymdFormatedDate).isValid()) {
+                // TO store ISO type date as like for mongoose document date Type
+                // isoDate = moment(dateObj).format('YYYY-MM-DDT00:00:00.000') + 'Z';
+
+                // isoDate = moment(dateObj, 'YYYY-MM-DD').toISOString();
+
+                isoDate = moment(ymdFormatedDate).toISOString();
+                ltIsoDate = moment(ymdFormatedDate).add(1, 'day').toISOString();
+
+                // isoDate1 = moment(dateObj, 'DD/MM/YYYY')
                 //     .utcOffset(0)
                 //     .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
                 //     .toISOString();
+
+                // console.log(isoDate1);
 
                 // isoDate = new Date(
                 //     dateObj.getTime() - dateObj.getTimezoneOffset() * 60000
                 // ).toISOString();
 
                 filterParams.$or.push({
-                    date: isoDate,
+                    date: {
+                        $gte: isoDate,
+                        $lt: ltIsoDate,
+                    },
                 });
             }
         }

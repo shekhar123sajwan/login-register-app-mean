@@ -8,17 +8,21 @@ import { DashboardComponent } from './dashboard.component';
 import { MainContentComponent } from './components/main-content/main-content.component';
 import { MaterialModule } from './../shared/material.module';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
-import { ToolbarComponent } from './components/toolbar/toolbar.component';  
-
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 @NgModule({
-  declarations: [DashboardComponent, MainContentComponent, SideNavComponent, ToolbarComponent],
+  declarations: [
+    DashboardComponent,
+    MainContentComponent,
+    SideNavComponent,
+    ToolbarComponent,
+  ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
     MaterialModule,
     InvoicesModule,
-    ClientsModule
-  ]
+    ClientsModule,
+  ],
 })
-export class DashboardModule { }
+export class DashboardModule {}

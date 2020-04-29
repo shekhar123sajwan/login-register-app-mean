@@ -1,44 +1,103 @@
+<mat-toolbar>Create Invoice</mat-toolbar>
 <mat-card>
-  <div class="form-container">
-    <mat-toolbar>Add Invoice</mat-toolbar>
-    <mat-form-field>
+  <form class="form-container" [formGroup]="invoiceForm" (ngSubmit)="update()">
+    <mat-form-field color="warn">
       <mat-label>Item</mat-label>
-      <input #item matInput placeholder="Item" />
+      <input matInput placeholder="Item" formControlName="item" />
+      <mat-error
+        *ngIf="
+          invoiceForm.controls.item.errors &&
+          invoiceForm.controls.item.errors.required &&
+          invoiceForm.controls.item.touched
+        "
+      >
+        Item is <strong>required</strong>
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field color="warn">
       <mat-label>Quantity</mat-label>
-      <input matInput type="number" placeholder="Quantity" />
+      <input
+        matInput
+        type="number"
+        placeholder="Quantity"
+        formControlName="quantity"
+      />
+      <mat-error
+        *ngIf="
+          invoiceForm.controls.quantity.errors &&
+          invoiceForm.controls.quantity.errors.required &&
+          invoiceForm.controls.quantity.touched
+        "
+      >
+        Quantity is <strong>required</strong>
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field color="warn">
       <mat-label>Choose a date</mat-label>
-      <input matInput [matDatepicker]="invoiceDate" />
+      <input matInput [matDatepicker]="invoiceDate" formControlName="date" />
       <mat-datepicker-toggle
         matSuffix
         [for]="invoiceDate"
       ></mat-datepicker-toggle>
       <mat-datepicker #invoiceDate></mat-datepicker>
+      <mat-error
+        *ngIf="
+          invoiceForm.controls.date.errors &&
+          invoiceForm.controls.date.errors.required &&
+          invoiceForm.controls.date.touched
+        "
+      >
+        Date is <strong>required</strong>
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field color="warn">
       <mat-label>Choose a Due date</mat-label>
-      <input matInput [matDatepicker]="invoiceDueDate" />
+      <input matInput [matDatepicker]="invoiceDueDate" formControlName="due" />
       <mat-datepicker-toggle
         matSuffix
         [for]="invoiceDueDate"
       ></mat-datepicker-toggle>
       <mat-datepicker #invoiceDueDate></mat-datepicker>
+      <mat-error
+        *ngIf="
+          invoiceForm.controls.due.errors &&
+          invoiceForm.controls.due.errors.required &&
+          invoiceForm.controls.due.touched
+        "
+      >
+        Due Date is <strong>required</strong>
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field color="warn">
       <mat-label>Rate</mat-label>
-      <input matInput type="number" placeholder="Rate" />
+      <input matInput type="number" placeholder="Rate" formControlName="rate" />
+      <mat-error
+        *ngIf="
+          invoiceForm.controls.rate.errors &&
+          invoiceForm.controls.rate.errors.required &&
+          invoiceForm.controls.rate.touched
+        "
+      >
+        Rate is <strong>required</strong>
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field color="warn">
       <mat-label>Tax</mat-label>
-      <input matInput type="number" placeholder="Tax" />
+      <input matInput type="number" placeholder="Tax" formControlName="tax" />
+      <mat-error
+        *ngIf="
+          invoiceForm.controls.tax.errors &&
+          invoiceForm.controls.tax.errors.required &&
+          invoiceForm.controls.tax.touched
+        "
+      >
+        Tax is <strong>required</strong>
+      </mat-error>
     </mat-form-field>
 
     <div class="example-button-row">
@@ -46,10 +105,13 @@
         mat-raised-button
         color="primary"
         [ngStyle]="{ 'margin-right': '10px' }"
+        [disabled]="invoiceForm.invalid"
       >
         Save
       </button>
-      <button mat-raised-button color="warn">Reset</button>
+      <button mat-raised-button color="warn" type="button" (click)="reset()">
+        Reset
+      </button>
     </div>
-  </div>
+  </form>
 </mat-card>
