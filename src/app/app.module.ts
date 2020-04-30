@@ -6,13 +6,16 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppLoadingComponent } from './loading/loading.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackbarComponent } from './snackbar/snackbar.component';
 
 @NgModule({
-  declarations: [AppComponent, AppLoadingComponent],
+  declarations: [AppComponent, AppLoadingComponent, SnackbarComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatSnackBarModule,
     HttpClientModule,
   ],
   providers: [HttpService],

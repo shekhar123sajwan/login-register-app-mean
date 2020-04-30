@@ -1,6 +1,8 @@
+import { SnackBar } from './../models/snackbar';
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject, BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +17,9 @@ export class ConfigService {
 
   loading: boolean = false;
   @Output() load: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  sanckBarsubject: Subject<SnackBar> = new Subject<SnackBar>();
+
   constructor(private router: Router) {}
 
   cleanUrl(url: string) {
@@ -32,5 +37,9 @@ export class ConfigService {
 
   redirect(path: string) {
     return this.router.navigate([path]);
+  }
+
+  openSnackBar(data: SnackBar) {
+    return this.sanckBarsubject.next(data);
   }
 }

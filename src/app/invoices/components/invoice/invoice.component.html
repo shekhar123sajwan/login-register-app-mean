@@ -105,7 +105,7 @@
         mat-raised-button
         color="primary"
         [ngStyle]="{ 'margin-right': '10px' }"
-        [disabled]="invoiceForm.invalid"
+        [disabled]="invoiceForm.invalid || invoiceAdding"
       >
         Save
       </button>

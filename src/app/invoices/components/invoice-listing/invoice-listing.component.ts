@@ -59,10 +59,13 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.renderTableData();
-    this.tableData.subscribe((invoices) => {
-      this.configService.toggleLoading(false);
-      this.dataSource = new MatTableDataSource(invoices);
-    });
+    this.tableData.subscribe(
+      (invoices) => {
+        this.configService.toggleLoading(false);
+        this.dataSource = new MatTableDataSource(invoices);
+      },
+      (err) => this.handerError(err)
+    );
   }
 
   renderTableData(): void {
@@ -84,8 +87,8 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
         this.resultsLength = response.body.data.total;
         return response.body.data.invoices;
       }),
-      catchError(() => {
-        this.configService.toggleLoading(false);
+      catchError((err) => {
+        this.handerError(err);
         return observableOf([]);
       })
     );
@@ -174,13 +177,23 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
       .trim()
       .toLowerCase();
     this.paginator.pageIndex = 0;
-    this.tableData.pipe(first()).subscribe((invoices) => {
-      this.configService.toggleLoading(false);
-      this.dataSource = new MatTableDataSource(invoices);
-    });
+    this.tableData.pipe(first()).subscribe(
+      (invoices) => {
+        this.configService.toggleLoading(false);
+        this.dataSource = new MatTableDataSource(invoices);
+      },
+      (err) => this.handerError(err)
+    );
   }
 
   addInvoice() {
     return this.configService.redirect('dashboard/invoices/new');
+  }
+
+  handerError(err: string): void {
+    this.configService.openSnackBar({
+      data: { message: err, err: true, actionBtn: 'OOps!' },
+    });
+    this.configService.toggleLoading(false);
   }
 }

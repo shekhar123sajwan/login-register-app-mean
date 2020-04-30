@@ -1,6 +1,12 @@
 import { NativeDateAdapter } from '@angular/material/core';
 import * as moment from 'moment';
+import { Injectable } from '@angular/core';
 
+@Injectable({
+  // we declare that this service should be created
+  // by the root application injector.
+  providedIn: 'root',
+})
 export class AppDateAdapter extends NativeDateAdapter {
   format(date: Date, displayFormat: Object): string {
     if (displayFormat === 'input') {
