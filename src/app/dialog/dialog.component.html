@@ -1,18 +1,25 @@
-<h2 mat-dialog-title>{{ data.title }}</h2>
-
-<div mat-dialog-content>
+<h2 mat-dialog-title class="mat-dialog-title">{{ data.title }}</h2>
+<div mat-dialog-content class="mat-dialog-content">
   <p>{{ data.message }}</p>
 </div>
 <div mat-dialog-actions>
   <div class="example-button-row">
-    <button mat-raised-button (click)="onNoClick()">No</button>
     <button
-      mat-raised-button
-      cdkFocusInitial
-      color="primary"
+      mat-button
+      (click)="onNoClick()"
+      class="mat-focus-indicator mat-button mat-button-base"
+    >
+      <span class="mat-button-wrapper">No Thanks</span>
+      <div matripple="" class="mat-ripple mat-button-ripple"></div>
+      <div class="mat-button-focus-overlay"></div>
+    </button>
+    <button
+      class="mat-focus-indicator mat-raised-button mat-button-base mat-warn"
       (click)="onDeleteInvoice()"
     >
-      Ok
+      <span class="mat-button-wrapper">Ok</span>
+      <div matripple="" class="mat-ripple mat-button-ripple"></div>
+      <div class="mat-button-focus-overlay"></div>
     </button>
   </div>
 </div>

@@ -1,0 +1,10 @@
+$primary-color: #f44336;
+$indigo-color: #3f51b5;
+
+.mat-dialog-container {
+  button {
+    .primary {
+      color: $primary-color;
+    }
+  }
+}

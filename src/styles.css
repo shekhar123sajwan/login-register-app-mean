@@ -17,6 +17,17 @@ span {
   margin: 0px;
 }
 
+/* .mat-dialog-container button.primary {
+  color: #f44336;
+}
+
+.mat-dialog-container button {
+  padding: 5px 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  margin-right: 5px;
+} */
 .mat-form-field {
   margin: 3px 0px;
 }

@@ -1,5 +1,4 @@
 import { DialogComponent } from './dialog/dialog.component';
-//import { HttpService } from './services/http.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,5 +25,6 @@ import { SnackbarComponent } from './snackbar/snackbar.component';
   ],
   providers: [],
   bootstrap: [AppComponent],
+  entryComponents: [DialogComponent],
 })
 export class AppModule {}
