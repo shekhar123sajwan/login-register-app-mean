@@ -1,4 +1,5 @@
-import { HttpService } from './services/http.service';
+import { DialogComponent } from './dialog/dialog.component';
+//import { HttpService } from './services/http.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,7 +11,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackbarComponent } from './snackbar/snackbar.component';
 
 @NgModule({
-  declarations: [AppComponent, AppLoadingComponent, SnackbarComponent],
+  declarations: [
+    AppComponent,
+    AppLoadingComponent,
+    SnackbarComponent,
+    DialogComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -18,7 +24,7 @@ import { SnackbarComponent } from './snackbar/snackbar.component';
     MatSnackBarModule,
     HttpClientModule,
   ],
-  providers: [HttpService],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

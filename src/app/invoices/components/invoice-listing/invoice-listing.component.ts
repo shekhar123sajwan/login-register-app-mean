@@ -1,20 +1,39 @@
+import { DialogComponent } from './../../../dialog/dialog.component';
 import { ConfigService } from './../../../services/config.services';
 import { Invoice } from './../../../models/invoice';
 import { HttpService } from './../../../services/http.service';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+  Inject,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { merge, Observable, of as observableOf, Subject } from 'rxjs';
+import {
+  merge,
+  Observable,
+  of as observableOf,
+  Subject,
+  Subscription,
+} from 'rxjs';
 import { debounce } from 'lodash';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 
 import {
   catchError,
   map,
   startWith,
   switchMap,
-  debounceTime,
   first,
+  take,
+  share,
 } from 'rxjs/operators';
 
 @Component({
@@ -41,10 +60,12 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
 
   searchText: string = '';
   tableData: Observable<Invoice[]>;
+  data$: Observable<Invoice[]>;
 
   constructor(
     private httpService: HttpService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    public dialog: MatDialog
   ) {
     //delay applyFilter method
     this.applyFilter = debounce(this.applyFilter, 500);
@@ -58,8 +79,8 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.renderTableData();
-    this.tableData.subscribe(
+    this.data$ = this.renderTableData();
+    this.data$.subscribe(
       (invoices) => {
         this.configService.toggleLoading(false);
         this.dataSource = new MatTableDataSource(invoices);
@@ -68,9 +89,9 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
     );
   }
 
-  renderTableData(): void {
+  renderTableData(): Observable<Invoice[]> {
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-    this.tableData = merge(this.sort.sortChange, this.paginator.page).pipe(
+    return merge(this.sort.sortChange, this.paginator.page).pipe(
       startWith({}),
       switchMap(() => {
         this.configService.toggleLoading(true);
@@ -90,7 +111,8 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
       catchError((err) => {
         this.handerError(err);
         return observableOf([]);
-      })
+      }),
+      share()
     );
   }
 
@@ -177,7 +199,10 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
       .trim()
       .toLowerCase();
     this.paginator.pageIndex = 0;
-    this.tableData.pipe(first()).subscribe(
+    this.data$ = this.renderTableData();
+    console.log(this.paginator);
+    console.log(this.data$);
+    this.data$.pipe(first()).subscribe(
       (invoices) => {
         this.configService.toggleLoading(false);
         this.dataSource = new MatTableDataSource(invoices);
@@ -190,10 +215,43 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
     return this.configService.redirect('dashboard/invoices/new');
   }
 
+  editHandler(id: string) {
+    return this.configService.redirect(`/dashboard/invoices/${id}`);
+  }
+
+  deleteHandler(id: string) {
+    return new Promise((resolve, reject) => {
+      if (!id) {
+        this.configService.toggleLoading(false);
+        this.handerError('Id not Found.');
+        return reject('Id not Found.');
+      }
+
+      const dialogRef = this.dialog.open(DialogComponent, {
+        width: '250px',
+        data: {
+          title: 'Delete Invoice',
+          message: 'Are you really want to delete Invoice?',
+          dialogData: {
+            tableData: this.tableData,
+            invoiceId: id,
+            dataSource: this.dataSource,
+          },
+        },
+      });
+
+      // dialogRef.afterClosed().subscribe((result) => {
+      //   console.log('The dialog was closed');
+      // });
+      // console.log(dialogRef);
+    });
+  }
+
   handerError(err: string): void {
     this.configService.openSnackBar({
       data: { message: err, err: true, actionBtn: 'OOps!' },
     });
     this.configService.toggleLoading(false);
+    return;
   }
 }

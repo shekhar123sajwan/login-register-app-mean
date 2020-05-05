@@ -1,4 +1,5 @@
 export interface Invoice {
+  _id: string;
   item: string;
   quantity: number;
   date: Date;

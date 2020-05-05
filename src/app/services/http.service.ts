@@ -91,10 +91,10 @@ export class HttpService {
     let errorMessage = 'Server error!';
     if (error.error instanceof ErrorEvent) {
       // Client-side errors
-      errorMessage = `Error Message: ${error.error.message}`;
+      errorMessage = `Error: ${error.error.message}`;
     } else {
       // Server-side errors
-      errorMessage = `Error Message: ${error.message}`;
+      errorMessage = `Error: ${error.error.message || error.message}`;
     }
     return throwError(errorMessage);
   }

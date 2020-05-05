@@ -39,6 +39,12 @@ export class ConfigService {
     return this.router.navigate([path]);
   }
 
+  redirectTo(uri: string) {
+    this.router
+      .navigateByUrl('/', { skipLocationChange: true })
+      .then(() => this.router.navigate([uri]));
+  }
+
   openSnackBar(data: SnackBar) {
     return this.sanckBarsubject.next(data);
   }

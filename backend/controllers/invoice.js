@@ -172,6 +172,7 @@ module.exports.delete = async (req, res, next) => {
 
 module.exports.update = async (req, res, next) => {
     const { id } = req.params;
+    console.log(req.params);
     const schema = Joi.object({
         item: Joi.string(),
 
