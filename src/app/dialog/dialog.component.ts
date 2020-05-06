@@ -1,16 +1,12 @@
 import { ConfigService } from './../services/config.services';
 import { HttpService } from './../services/http.service';
 import { Component, OnInit, Inject } from '@angular/core';
-import { pipe, Observable } from 'rxjs';
-
 import {
   MatDialogRef,
   DialogRole,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { DialogData } from '../models/dialog-data';
-import { first } from 'rxjs/operators';
-import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-dialog',
@@ -18,6 +14,7 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./dialog.component.css'],
 })
 export class DialogComponent implements OnInit {
+  isDeleting: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -32,12 +29,13 @@ export class DialogComponent implements OnInit {
   }
 
   onDeleteInvoice(): void {
-    console.log(this.data.dialogData);
     this.configService.toggleLoading(true);
+    this.isDeleting = true;
     this.httpService
       .deleteRequest('invoices/' + this.data.dialogData.invoiceId + '', {})
       .subscribe(
         (response) => {
+          this.isDeleting = false;
           this.dialogRef.close();
           this.configService.openSnackBar({
             data: { message: 'Invoice Deleted.', err: false },

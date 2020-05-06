@@ -16,6 +16,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, DateAdapter } from '@angular/material/core';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { AppDateAdapter } from './app-date-adapter';
+import { MatTabsModule } from '@angular/material/tabs';
 
 const exportedMatModule = [
   MatButtonModule,
@@ -32,6 +33,7 @@ const exportedMatModule = [
   MatMenuModule,
   MatDatepickerModule,
   MatNativeDateModule,
+  MatTabsModule,
 ];
 
 export const APP_DATE_FORMATS = {

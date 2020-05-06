@@ -20,8 +20,13 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.css", "src/styles.scss"],
-            "scripts": []
+            "styles": [
+              "src/styles.css",
+              "src/styles.scss",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/fontawesome.min.css"
+            ],
+            "scripts": ["./node_modules/bootstrap/dist/js/bootstrap.min.js"]
           },
           "configurations": {
             "production": {
@@ -79,8 +84,13 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.css", "src/styles.scss"],
-            "scripts": []
+            "styles": [
+              "src/styles.css",
+              "src/styles.scss",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/fontawesome.min.css"
+            ],
+            "scripts": ["./node_modules/bootstrap/dist/js/bootstrap.min.js"]
           }
         },
         "lint": {

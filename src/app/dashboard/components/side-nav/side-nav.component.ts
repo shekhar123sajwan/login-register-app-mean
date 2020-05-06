@@ -12,8 +12,8 @@ export class SideNavComponent implements OnInit {
   public isSmallScreen: boolean;
 
   links: Object = [
-    { name: 'Invoice', url: 'invoices' },
-    { name: 'Client', url: 'clients' },
+    { name: 'Invoice', url: '/dashboard/invoices' },
+    { name: 'Client', url: '/dashboard/clients' },
   ];
   constructor() {}
 

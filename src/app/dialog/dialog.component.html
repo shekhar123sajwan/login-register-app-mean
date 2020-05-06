@@ -16,6 +16,7 @@
     <button
       class="mat-focus-indicator mat-raised-button mat-button-base mat-warn"
       (click)="onDeleteInvoice()"
+      [disabled]="isDeleting"
     >
       <span class="mat-button-wrapper">Ok</span>
       <div matripple="" class="mat-ripple mat-button-ripple"></div>

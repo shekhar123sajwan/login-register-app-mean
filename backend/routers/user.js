@@ -1,28 +1,17 @@
 const express = require('express');
-const multer = require('multer');
 const router = express.Router();
-const forms = multer();
+const userController = require('../controllers/user');
 
-// router.use((req, res, next) => {
-// 	console.log(req);
-//     next();
-// });
-
-router.get('/', (req, res) => {
-  res.status(200);
-  res.json({ message: 'ok' });
+router.post('/register', async (req, res) => {
+    res.json(req.files);
 });
 
-router.post('/register', forms.array('image'), (req, res) => {
-  res.json(req.files);
+router.post('/login', async (req, res) => {
+    res.json('sf');
 });
 
-router.post('/login', (req, res) => {
-  res.json('sf');
-});
-
-router.get('/:id', (req, res) => {
-  res.json('hi');
+router.get('/:id', async (req, res) => {
+    res.json('hi');
 });
 
 module.exports = router;

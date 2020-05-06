@@ -1,3 +1,5 @@
+import { LoginComponent } from './login/login.component';
+import { MatTabsModule } from '@angular/material/tabs';
 import { DialogComponent } from './dialog/dialog.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -8,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppLoadingComponent } from './loading/loading.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackbarComponent } from './snackbar/snackbar.component';
+import { LoginModule } from './login/login.module';
 
 @NgModule({
   declarations: [
@@ -22,8 +25,10 @@ import { SnackbarComponent } from './snackbar/snackbar.component';
     BrowserAnimationsModule,
     MatSnackBarModule,
     HttpClientModule,
+    MatTabsModule,
+    LoginModule,
   ],
-  providers: [],
+  providers: [MatTabsModule],
   bootstrap: [AppComponent],
   entryComponents: [DialogComponent],
 })
