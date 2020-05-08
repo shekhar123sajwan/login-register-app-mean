@@ -1,29 +1,45 @@
 {
-  "name": "login-register-form",
-  "version": "1.1.1",
-  "description": "login register form",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app"
-  },
-  "author": "Shekhar Sajwan",
-  "license": "ISC",
-  "homepage": "",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "formidable": "^1.2.2",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.7",
-    "multer": "^1.4.2",
-    "passport": "^0.4.1",
-    "passport-jwt": "^4.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.2"
-  }
+    "name": "login-register-form",
+    "version": "1.1.1",
+    "description": "login register form",
+    "main": "app.js",
+    "scripts": {
+        "start": "SET DEBUG=login-register-app:* & node app",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "nodemon app"
+    },
+    "author": "Shekhar Sajwan",
+    "license": "ISC",
+    "homepage": "",
+    "dependencies": {
+        "@hapi/joi": "^17.1.1",
+        "@hapi/joi-date": "^2.0.1",
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "formidable": "^1.2.2",
+        "http-status-codes": "^1.4.0",
+        "jsonwebtoken": "^8.5.1",
+        "moment": "^2.24.0",
+        "mongoose": "^5.9.7",
+        "morgan": "^1.10.0",
+        "multer": "^1.4.2",
+        "passport": "^0.4.1",
+        "passport-jwt": "^4.0.0"
+    },
+    "devDependencies": {
+        "eslint": "^6.8.0",
+        "eslint-config-airbnb": "^18.1.0",
+        "eslint-config-airbnb-base": "^14.1.0",
+        "eslint-config-node": "^4.0.0",
+        "eslint-config-prettier": "^6.10.1",
+        "eslint-config-standard": "^14.1.1",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "nodemon": "^2.0.2",
+        "prettier": "^2.0.4"
+    }
 }

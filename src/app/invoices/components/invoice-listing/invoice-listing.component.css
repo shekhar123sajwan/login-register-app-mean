@@ -1,0 +1,19 @@
+table {
+  width: 100%;
+}
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 20%;
+}
+.filter-input-box {
+  padding: 0 5px;
+}
+
+.invoice-section-header {
+  display: flex;
+  justify-content: space-between;
+}

@@ -1,13 +1,30 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>LoginRegisterApp</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>LoginRegisterApp</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  </head>
+  <body>
+    <app-root>
+      <div class="app-loading">
+        <div
+          id="loader"
+          style="
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            left: 50%;
+            margin-left: -75px;
+            top: 50%;
+            margin-top: -75px;
+          "
+        >
+          <img src="assets/images/loading.gif" style="max-width: 100%;" />
+        </div>
+      </div>
+    </app-root>
+  </body>
 </html>
