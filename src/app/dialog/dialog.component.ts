@@ -32,7 +32,10 @@ export class DialogComponent implements OnInit {
     this.configService.toggleLoading(true);
     this.isDeleting = true;
     this.httpService
-      .deleteRequest('invoices/' + this.data.dialogData.invoiceId + '', {})
+      .deleteRequest(
+        'admin/invoices/' + this.data.dialogData.invoiceId + '',
+        {}
+      )
       .subscribe(
         (response) => {
           this.isDeleting = false;

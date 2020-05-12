@@ -15,9 +15,14 @@ app.use(logger('dev'));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api', routers);
+app.use('/api/admin', routers);
+app.use('/api', require('./routers/web'));
 
 app.use((req, res, next) => {
     const err = new Error('Url not Found');

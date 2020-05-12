@@ -43,7 +43,7 @@ export class InvoiceComponent implements OnInit {
     if (this.isFormId) {
       let postParams = this.invoiceForm.value;
       this.httpService
-        .putRequest('invoices/' + this.isFormId + '', {}, postParams)
+        .putRequest('admin/invoices/' + this.isFormId + '', {}, postParams)
         .subscribe(
           (invoice) => {
             this.invoiceAdding = false;
@@ -65,7 +65,7 @@ export class InvoiceComponent implements OnInit {
         );
     } else {
       let postParams = this.invoiceForm.value;
-      this.httpService.postRequest('invoices', {}, postParams).subscribe(
+      this.httpService.postRequest('admin/invoices', {}, postParams).subscribe(
         (invoice) => {
           this.invoiceAdding = false;
           this.configService.openSnackBar({
@@ -100,7 +100,7 @@ export class InvoiceComponent implements OnInit {
       this.configService.toggleLoading(true);
       this.isFormId = id;
       this.httpService
-        .getRequest('invoices/' + id + '', {})
+        .getRequest('admin/invoices/' + id + '', {})
         .pipe(
           map((res) => {
             return {

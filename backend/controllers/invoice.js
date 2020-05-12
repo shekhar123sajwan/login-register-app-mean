@@ -1,6 +1,5 @@
 const invoiceModel = require('../models/invoice');
 const Joi = require('@hapi/joi').extend(require('@hapi/joi-date'));
-
 var moment = require('moment');
 
 module.exports.findAll = async (req, res, next) => {

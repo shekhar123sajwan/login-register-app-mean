@@ -102,7 +102,7 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
           filter: this.searchText,
           pages: this.paginator.pageIndex + 1,
         };
-        return this.httpService.getRequest('invoices/search', params);
+        return this.httpService.getRequest('admin/invoices/search', params);
       }),
       map((response) => {
         this.resultsLength = response.body.data.total;
@@ -125,7 +125,7 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
 
     this.configService.toggleLoading(true);
     try {
-      this.httpService.getRequest('invoices', params).subscribe(
+      this.httpService.getRequest('admin/invoices', params).subscribe(
         (response) => {
           this.configService.toggleLoading(false);
           this.dataSource = new MatTableDataSource<Invoice[]>(
@@ -161,12 +161,14 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
         rate: 3,
         tax: 3,
       };
-      this.httpService.postRequest('invoices', getParams, postParams).subscribe(
-        (response) => {
-          return response;
-        },
-        (err) => console.log(err)
-      );
+      this.httpService
+        .postRequest('admin/invoices', getParams, postParams)
+        .subscribe(
+          (response) => {
+            return response;
+          },
+          (err) => console.log(err)
+        );
       reject('no');
     });
   }
@@ -175,7 +177,7 @@ export class InvoiceListingComponent implements OnInit, AfterViewInit {
     return new Promise((resolve, reject) => {
       let getParams = {};
       this.httpService
-        .deleteRequest('invoices', getParams)
+        .deleteRequest('admin/invoices', getParams)
         .subscribe((response) => {
           console.log(response);
         });
