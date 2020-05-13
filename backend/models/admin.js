@@ -62,8 +62,31 @@ const AdminSchema = new Schema(
 // );
 
 //const UserModel = new mongoose.model('User', UserSchema);
+
 const AdminModel = new mongoose.model('Admin', AdminSchema);
-module.exports = AdminModel;
+const AdminAuthSchema = new Schema(
+    {
+        admin_id: { type: Schema.Types.ObjectId, ref: 'Admin', required: true },
+        token: {
+            type: String,
+            required: true,
+        },
+        expire: {
+            type: Date,
+            required: true,
+        },
+    },
+    {
+        timestamps: false,
+    },
+    {
+        versionKey: false,
+    }
+);
+
+const AdminAuthModel = new mongoose.model('Adminauth', AdminAuthSchema);
+
+module.exports = { AdminModel, AdminAuthModel };
 
 module.exports.getAdminByEmail = (email, callback) => {
     query = {

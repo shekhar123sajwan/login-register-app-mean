@@ -3,6 +3,8 @@ const Joi = require('@hapi/joi').extend(require('@hapi/joi-date'));
 var moment = require('moment');
 
 module.exports.findAll = async (req, res, next) => {
+    // res.cookie('access_token', { token: 123 });
+    // console.log(req.cookies);
     try {
         await invoiceModel.find().then((invoices) => {
             res.json({

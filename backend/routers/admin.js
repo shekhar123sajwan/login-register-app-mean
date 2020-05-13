@@ -7,6 +7,7 @@ router.post('/register', async (req, res, next) => {
 });
 
 router.post('/auth', adminController.login);
+router.get('/auth', adminController.authToken);
 
 router.get('/:id', async (req, res, next) => {
     res.json('hi');

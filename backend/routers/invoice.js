@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const InvoiceController = require('../controllers/invoice');
-var jwt = require('express-jwt');
+const authService = require('../service/auth');
+//var jwt = require('express-jwt');
 
-router.use(jwt({ secret: process.env.SECRET }));
+// router.use(jwt({ secret: process.env.SECRET }));
+
+router.use([authService.handleAuthorization]);
 router.get('/', InvoiceController.findAll);
 router.get('/search', InvoiceController.search);
 router.get('/:id', InvoiceController.findOne);
