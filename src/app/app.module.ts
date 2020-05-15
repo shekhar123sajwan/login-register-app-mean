@@ -1,3 +1,4 @@
+import { ConfigService } from './services/config.services';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DialogComponent } from './dialog/dialog.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -27,7 +28,7 @@ import { LoginModule } from './login/login.module';
     MatTabsModule,
     LoginModule,
   ],
-  providers: [MatTabsModule],
+  providers: [MatTabsModule, ConfigService],
   bootstrap: [AppComponent],
   entryComponents: [DialogComponent],
 })

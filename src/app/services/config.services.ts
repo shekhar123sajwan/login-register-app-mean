@@ -2,12 +2,13 @@ import { SnackBar } from './../models/snackbar';
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject, BehaviorSubject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConfigService {
+  public static SECRET = 'Loginregisterapp123';
   public static API_URL = 'http://localhost:3000/api/';
   public static HTTP_OPTIONS = {
     headers: new HttpHeaders({

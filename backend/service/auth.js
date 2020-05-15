@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 //const jwt = require('express-jwt');
-const TOKEN_EXPIREY = '1m';
+const TOKEN_EXPIREY = '2m';
 
 var token = (data, token_expire) => {
     return new Promise((resolve, reject) => {

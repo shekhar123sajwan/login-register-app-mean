@@ -17,6 +17,7 @@ import { MatNativeDateModule, DateAdapter } from '@angular/material/core';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { AppDateAdapter } from './app-date-adapter';
 import { MatTabsModule } from '@angular/material/tabs';
+import { ShowHidePasswordModule } from 'ngx-show-hide-password';
 
 const exportedMatModule = [
   MatButtonModule,
@@ -34,6 +35,7 @@ const exportedMatModule = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatTabsModule,
+  ShowHidePasswordModule,
 ];
 
 export const APP_DATE_FORMATS = {

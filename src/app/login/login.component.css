@@ -1,0 +1,15 @@
+.show-hide-password {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  margin: -5px 0px;
+}
+.show-hide-password input {
+  box-shadow: none;
+  transition: none;
+  font-size: 12px !important;
+}
+
+.ngx-show-hide-password .btn {
+  padding: 0px 5px !important;
+}
